@@ -408,12 +408,6 @@
 		_t.value = null;
 
 		function onRadioChange(event) {
-			event.stopPropagation();
-
-			if (event.target.tagName.toLowerCase() !== "input") {
-				return;
-			}
-
 			var
 				value = event.target.getAttribute("value");
 
@@ -452,7 +446,7 @@
 
 			controls.forEach(function(control) {
 				componentHandler.upgradeElement(control, "MaterialRadio");
-				control.addEventListener("click", onRadioChange);
+				control.addEventListener("change", onRadioChange);
 			});
 		};
 
@@ -549,11 +543,9 @@
 		_t.step = parseFloat(_t.parentNode.getAttribute("data-step"));
 
 		_t.value = isNaN(parseFloat(_t.value)) ? 0 : parseFloat(_t.value);
-		_t.valueNode = _t.parentNode.parentNode.querySelector(o.setpoint.value);
 
 		_t.setValuePrivate = function(value) {
 			_t.value = value * 1;
-			_t.valueNode.innerHTML = value;
 		};
 
 		function onMouseDown(up) {
@@ -1503,7 +1495,6 @@
 	selectionRows: ".mdl-form__selection-rows",
 	formControls: ".mdl-form__control",
 	formRadio: ".mdl-radio",
-	formRadioControl: ".mdl-radio__button",
 	formIcon: ".mdl-form__icon img",
 	uiLoadingBar: ".ui__loading",
 	layoutTitle: ".mdl-layout-title",
@@ -1516,8 +1507,7 @@
 	},
 	setpoint: {
 		up: ".mdl-form__setpoint--up",
-		down: ".mdl-form__setpoint--down",
-		value: ".mdl-form__setpoint-value"
+		down: ".mdl-form__setpoint--down"
 	},
 	colorpicker: {
 		up: ".mdl-form__colorpicker--up",
