@@ -4,6 +4,7 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
+    ngAnnotate = require('gulp-ng-annotate'),
     rename = require("gulp-rename");
 
 var paths = {
@@ -21,7 +22,16 @@ var paths = {
         'src': './web-src/js/services*.js',
         'name': 'services.js'
     }, {
-        'src': './web-src/js/controllers*.js',
+        // 'src': './web-src/js/controllers*.js',
+        'src': [
+            'js/controllers.js',
+        	'js/controllers.control.js',
+        	'js/controllers.setup.js',
+        	'js/controllers.configuration.js',
+        	'js/controllers.extension.js',
+        	'js/controllers.rules.js',
+            'js/controllers.module.js'
+        ],
         'name': 'controllers.js'
     }, {
         'src': [
@@ -121,7 +131,9 @@ gulp.task('copyFontLibs', function () {
 gulp.task('concat', function () {
     return paths.concat.forEach(function (obj) {
         return gulp.src(obj.src)
+            .pipe(ngAnnotate())
             .pipe(concat(obj.name))
+            .pipe(uglify())
             .pipe(rename(function (path) {
                 path.basename += '.min';
                 return path;
