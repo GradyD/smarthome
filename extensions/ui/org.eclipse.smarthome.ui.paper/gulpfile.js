@@ -6,6 +6,8 @@ var gulp = require('gulp'),
     ngAnnotate = require('gulp-ng-annotate'),
     angularFilesort = require('gulp-angular-filesort'),
     del = require('del'),
+    proxyMiddleware = require('http-proxy-middleware'),
+    browserSync = require('browser-sync'),
     rename = require("gulp-rename");
 
 var paths = {
@@ -124,4 +126,23 @@ gulp.task('clean', function () {
     return del([
         './web/'
       ]);
+});
+
+// Gulp Serve
+function browserSyncInit(baseDir) {
+    var server = {
+        baseDir: baseDir
+    };
+
+    server.middleware = proxyMiddleware(['/rest'], {target: 'http://localhost:8080'});
+
+    browserSync.instance = browserSync.init({
+        startPath: '/',
+        server: server,
+        browser: 'default'
+    });
+}
+
+gulp.task('serve', function () {
+    browserSyncInit(['./web-src', './web']);
 });
