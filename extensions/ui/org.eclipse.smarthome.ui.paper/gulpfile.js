@@ -134,3 +134,21 @@ function browserSyncInit(baseDir) {
 gulp.task('serve', ['build'], function () {
     browserSyncInit(['./web-src', './web']);
 });
+
+// Gulp Watch
+gulp.task('watch', ['serve'], function () {
+
+    gulp.watch(paths.scripts, function(event) {
+        gulp.start('uglify');
+        browserSync.reload(event.path);
+    });
+
+    gulp.watch(paths.partials, function(event) {
+        gulp.start('copyPartials');
+        browserSync.reload(event.path);
+    });
+    gulp.watch(paths.static, function(event) {
+        gulp.start('copyStatic');
+        browserSync.reload(event.path);
+    });
+});
